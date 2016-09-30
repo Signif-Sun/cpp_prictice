@@ -1,0 +1,44 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <regex>
+
+
+using namespace std;
+
+
+//文件中采取正则表达式读取文件，并进行爬取需要的内容
+void useKu()
+{
+	//来设定需要检测的正则内容
+	string pattern = "if";
+	//.*表示任意值，任意数量
+	pattern = ".*" + pattern + ".*";
+	regex r(pattern);
+	//记录找到的数量
+	size_t cnt = 0;
+	//采取只读方式读入文件
+	ifstream in("sig.txt",ifstream::in);
+	//对文件的内容打开失败的直接输出错误了
+	if (!in)
+	{
+		cerr << "the file can't be open!" << endl;
+	}
+	string line;
+	smatch results;
+	while (getline(in, line))
+	{
+		//在每一行中进行正则匹配
+		if (regex_match(line, results, r))
+		{
+			//将匹配到的内容输出
+			cout << results.str() << endl;
+			cnt++;
+		}
+		
+	}
+	in.close();//关闭文件
+	cout << cnt << endl;
+}
