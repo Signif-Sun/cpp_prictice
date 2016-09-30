@@ -1,0 +1,51 @@
+#include "stdafx.h"
+#include "signif.h"
+#include <iostream>
+#include <vector>
+#include <random>
+#include <ctime>
+#include <string>
+
+using namespace std;
+//姓名匹配预测游戏
+void ku()
+{
+	//需要输出的测试结果的小型库
+	vector<string> vs1 = { "1","xxx","中暑昏迷，","朋友们假装很悲伤地告诉他","你时间不多了，说完哭成一片","xxx","躺在床上线了半天对医生说：","换个医生试试，我感觉我还能活！" };
+	vector<string> vs2 = { "2","xxx","以前是网管，一天有几个混混来找麻烦，","xxx","灵机一动拔网线一把","那场面那阵势。","结果被打成傻逼了！" };
+	//将起放入vector中，方便查找并且使用匹配替换
+	vector<vector<string>> vsku = {vs1,vs2};
+	//采取随机函数的引擎
+	default_random_engine dre(static_cast<unsigned>(time(0)));
+	//使用均匀分布
+	uniform_int_distribution<int> ud(0, 1);
+	cout << "请输入你要测试的名字：" << endl;
+	string s;
+	cin >> s;
+	if (s != "quit")
+	{
+		int i = ud(dre);
+		//匹配替换
+		for (auto it = vsku[i].begin(); it != vsku[i].end(); it++)
+		{
+			if (*it == "xxx")
+			{
+				*it = s;
+			}
+		}
+		//首元素数字字符替换掉
+		*(vsku[i].begin()) = "  ";
+
+		//输出结果
+		for (auto it = vsku[i].begin(); it != vsku[i].end(); it++)
+		{
+			cout << *it;
+		}
+		cout << endl;
+		cout << endl;
+		//ku();  //可以采取递归的形势反复使用
+	}
+	else
+		exit(0);
+
+}
