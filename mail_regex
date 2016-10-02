@@ -1,0 +1,75 @@
+#include "stdafx.h"
+//#include "signif.h"
+#include <regex>
+#include <iostream>
+#include <string>
+
+
+using namespace std;
+
+//邮箱测试，相对应的邮箱结尾表示不同的邮箱
+void yxmatch(string s)
+{
+	//采取字母数字的验证方式的一定写上[:alnum:]，前后的冒号都不可以省略
+	string pattern = "[[:alnum:]_]*";
+	//由于下方采取该方式，所以一定需要做的事情是将下面的命名与上述的命名区分开
+	string pattern0 = "^[[:alnum:]]+" + pattern  + "\\@163\\.com$";
+	string pattern2 = "^[[:alnum:]]+" + pattern + "\\@qq\\.com$";
+	string pattern3 = "^[[:alnum:]]+" + pattern + "\\@sina\\.com$";
+	regex r(pattern0);
+	regex r2(pattern2);
+	regex r3(pattern3);
+	smatch result;
+	if (regex_search(s, result ,r))
+	{
+		cout << s << " is a 163 mail!" << endl;
+	}
+	else if (regex_search(s,r2))
+	{
+		cout << s << " is a qq mail!" << endl;
+	}
+	else if (regex_search(s,r3))
+	{
+		cout << s << " is a sina mail!" << endl;
+	}
+	else
+		cout << s << " is not a 163/aa/sina mail!" << endl;
+
+
+}
+
+void yxmatch_t()
+{
+	cout << "请输入你需要测试的邮箱号！" << endl;
+	string str;
+	cin >> str;
+	if (str != "结束")
+	{
+		yxmatch(str);
+	}
+	else
+		exit(0);
+
+	cout << "请继续输入你需要测试的邮箱号！或者输入“结束”结束测试！" << endl;
+	cout << endl;
+	yxmatch_t();
+}
+//第二个测试？可选作用，以及数字个数的测试办法\\d{个数n}，如下检测到的是三位数的邮箱
+void threeNums_mail()
+{
+	string s;
+	cin >> s;
+	string pattern = "[_*]?";
+	//由于下方采取该方式，所以一定需要做的事情是将下面的命名与上述的命名区分开
+	string pattern0 = "^\\d{3}" + pattern + "\\@163\\.com$";
+	regex r(pattern0);
+	smatch result;
+	if (regex_search(s, result, r))
+	{
+		cout << s << " is a 163 mail!" << endl;
+		//如下如果是1236@163.com，检测到失败，因为^作为开头，如果没有还会成功但是检测到的是236@163.com
+		cout << result.str() << endl;
+	}
+	else
+		cout << "GG" << endl;
+}
