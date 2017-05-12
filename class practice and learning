@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <unoredered_map>
+
+using namespace std;
+
+class Vehicle {
+public:
+	string ID;
+	unordered_map<string, int> grade;
+	Vehicle() = default;
+	Vehicle(string n, double p, string d) { name = n; price = p; describe = d; };
+	vector<string> display() {
+		return{ name,describe };
+	}
+
+	vector<string> getGrade(string s,unordered_map<string,int> mapping) {
+		vector<string> idGrade_average;
+		double average = 0;
+		ID = s;
+		grade = mapping;
+		for (auto beg = mapping.begin(); beg != mapping.end(); beg++) {
+                        //second is a method of unordered_map
+			average += (*beg).second;
+		}
+		average = average / (mapping.size());
+		idGrade_average.push_back(ID);
+		idGrade_average.push_back(to_string(average));
+		return idGrade_average;
+	}
+
+protected:
+	string name;
+	double price;
+	string describe;
+
+private:
+	
+
+};
+
+class Car : public Vehicle {
+public:
+	Car() = default;
+	Car(string n, double p, string d) { name = n; price = p; describe = d; };
+
+};
+
+
+int main()
+{
+	Vehicle vehicle{"aodi",1500000,"the modest car!"};
+	Car car{ "aodi",1500000,"the best car!" };
+	vector<string> strs = car.display();
+	vector<string> getGrade = car.getGrade("23610998", { {"math",96},{"physis",94},{"English",88 } });
+	cout << getGrade[0] << "--" << getGrade[1] << endl;
+	
+	
+    return 0;
+}
